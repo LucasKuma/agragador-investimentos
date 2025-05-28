@@ -2,6 +2,10 @@ package tech.kuma.agregadordeinvestimentos.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.kuma.agregadordeinvestimentos.controller.dto.AccountResponseDto;
+import tech.kuma.agregadordeinvestimentos.controller.dto.CreateAccountDto;
+import tech.kuma.agregadordeinvestimentos.controller.dto.CreateUserDto;
+import tech.kuma.agregadordeinvestimentos.controller.dto.UpdateUserDto;
 import tech.kuma.agregadordeinvestimentos.entity.User;
 import tech.kuma.agregadordeinvestimentos.service.UserService;
 
@@ -51,5 +55,17 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId) {
         userService.deleteById(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId, @RequestBody CreateAccountDto createAccountDto) {
+        userService.createAccount(userId, createAccountDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccountResponseDto>> listAccounts(@PathVariable("userId") String userId) {
+        var accounts = userService.listAccounts(userId);
+        return ResponseEntity.ok(accounts);
     }
 }
